@@ -25,42 +25,105 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
 
   <style>
-
-    .ticks {
-      font-size: 10px;
-    }
-
-    .track,
-    .track-inset,
-    .track-overlay {
-      stroke-linecap: round;
-    }
-
-    .track {
-      stroke: #000;
-      stroke-opacity: 0.3;
-      stroke-width: 10px;
-    }
-
-    .track-inset {
-      stroke: #ddd;
-      stroke-width: 8px;
-    }
-
-    .track-overlay {
-      pointer-events: stroke;
-      stroke-width: 50px;
-      stroke: transparent;
-      cursor: crosshair;
-    }
-
-    .handle {
-      fill: #fff;
-      stroke: #000;
-      stroke-opacity: 0.5;
-      stroke-width: 1.25px;
-    }
-  </style>
+  #time-range p {
+    font-family:"Arial", sans-serif;
+    font-size:14px;
+    color:#333;
+  }
+  .ui-slider-horizontal {
+    height: 8px;
+    background: #D7D7D7;
+    border: 1px solid #BABABA;
+    box-shadow: 0 1px 0 #FFF, 0 1px 0 #CFCFCF inset;
+    clear: both;
+    margin: 8px 0;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+  }
+  .ui-slider {
+    position: relative;
+    text-align: left;
+  }
+  .ui-slider-horizontal .ui-slider-range {
+    top: -1px;
+    height: 100%;
+  }
+  .ui-slider .ui-slider-range {
+    position: absolute;
+    z-index: 1;
+    height: 8px;
+    font-size: .7em;
+    display: block;
+    border: 1px solid #5BA8E1;
+    box-shadow: 0 1px 0 #AAD6F6 inset;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px;
+    background: #81B8F3;
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+    background-size: 100%;
+    background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #A0D4F5), color-stop(100%, #81B8F3));
+    background-image: -webkit-linear-gradient(top, #A0D4F5, #81B8F3);
+    background-image: -moz-linear-gradient(top, #A0D4F5, #81B8F3);
+    background-image: -o-linear-gradient(top, #A0D4F5, #81B8F3);
+    background-image: linear-gradient(top, #A0D4F5, #81B8F3);
+  }
+  .ui-slider .ui-slider-handle {
+    border-radius: 50%;
+    background: #F9FBFA;
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…pZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+    background-size: 100%;
+    background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #C7CED6), color-stop(100%, #F9FBFA));
+    background-image: -webkit-linear-gradient(top, #C7CED6, #F9FBFA);
+    background-image: -moz-linear-gradient(top, #C7CED6, #F9FBFA);
+    background-image: -o-linear-gradient(top, #C7CED6, #F9FBFA);
+    background-image: linear-gradient(top, #C7CED6, #F9FBFA);
+    width: 22px;
+    height: 22px;
+    -webkit-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+    -moz-box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+    box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.6), 0 -1px 0 1px rgba(0, 0, 0, 0.15) inset, 0 1px 0 1px rgba(255, 255, 255, 0.9) inset;
+    -webkit-transition: box-shadow .3s;
+    -moz-transition: box-shadow .3s;
+    -o-transition: box-shadow .3s;
+    transition: box-shadow .3s;
+  }
+  .ui-slider .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    cursor: default;
+    border: none;
+    cursor: pointer;
+  }
+  .ui-slider .ui-slider-handle:after {
+    content:"";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 50%;
+    margin-top: -4px;
+    left: 50%;
+    margin-left: -4px;
+    background: #30A2D2;
+    -webkit-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
+    -moz-box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 white;
+    box-shadow: 0 1px 1px 1px rgba(22, 73, 163, 0.7) inset, 0 1px 0 0 #FFF;
+  }
+  .ui-slider-horizontal .ui-slider-handle {
+    top: -.5em;
+    margin-left: -.6em;
+  }
+  .ui-slider a:focus {
+    outline:none;
+  }
+</style>
 </head>
 
 <body id="page-top">
@@ -108,93 +171,136 @@
         <h2 class="mb-5">Parker Solar Probe Orbits</h2>
 
         
-      <div class="my-auto">
-            <div id="slider"></div>
-            <img id="parker" style="width: 750px; height:500px;" src="img/SOPSP/f20180801.png"></div>
+        <div class="my-auto">
+
+          <div id="time-range">
+            <p>Time Range: <u><span class="slider-time"></span> to <span class="slider-time2"></span>
+            </u></p>
+            <div class="row">
+              <div class="sliders_step1 col-lg-7">
+                <div id="slider-range"></div>
+              </div>
+              
+              <div class="col-lg-2">
+                <select class="year-form1 form-control">
+                  <option>2018</option>
+                  <option>2019</option>
+                  <option>2020</option>
+                  <option>2021</option>
+                  <option>2022</option>
+                  <option>2023</option>
+                  <option>2024</option>
+                  <option>2025</option>
+                  <option>2026</option>
+                  <option>2027</option>
+                </select>
+              </div>
+              <div class="col-lg-2">
+                <select class="year-form2 form-control">
+                  <option>2018</option>
+                  <option>2019</option>
+                  <option>2020</option>
+                  <option>2021</option>
+                  <option>2022</option>
+                  <option>2023</option>
+                  <option>2024</option>
+                  <option>2025</option>
+                  <option>2026</option>
+                  <option selected="selected">2027</option>
+                </select>
+              </div>
+              <div class="col-lg-1">
+                <button type="button" class="play btn btn-primary">Play</button>
+              </div>
+            </div>
+          </div>
+          <img id="parker_img" style="width: 750px; height:500px;" src="img/SOPSP/f20180801.png">
+        </div>
       </div>
     </section>
 
-    </div>
-    <script>
-var formatDateIntoYear = d3.timeFormat("%Y");
-var formatDate = d3.timeFormat("%b %d %Y");
-var _backdate = d3.timeFormat("%Y%m%d");
-var startDate = new Date("2018-08-01"),
-    endDate = new Date("2027-08-01");
+  </div>
 
-var margin = {top:0, right:50, bottom:0, left:50},
-    width = 960 -margin.left - margin.right,
-    height = 100 - margin.top - margin.bottom;
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-var svg = d3.select("#slider")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height);
-    
-var x = d3.scaleTime()
-    .domain([startDate, endDate])
-    .range([0, width])
-    .clamp(false);
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-var slider = svg.append("g")
-    .attr("class", "slider")
-    .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
-
-slider.append("line")
-    .attr("class", "track")
-    .attr("x1", x.range()[0])
-    .attr("x2", x.range()[1])
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-inset")
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-overlay")
-    .call(d3.drag()
-        .on("start.interrupt", function() { slider.interrupt(); })
-        .on("end drag", function() { drop(x.invert(d3.event.x)); }));
-
-slider.insert("g", ".track-overlay")
-    .attr("class", "ticks")
-    .attr("transform", "translate(0," + 18 + ")")
-  .selectAll("text")
-    .data(x.ticks(10))
-    .enter()
-    .append("text")
-    .attr("x", x)
-    .attr("y", 10)
-    .attr("text-anchor", "middle")
-    .text(function(d) { return formatDateIntoYear(d); });
-
-var label = slider.append("text")  
-    .attr("class", "label")
-    .attr("text-anchor", "middle")
-    .text(formatDate(startDate))
-    .attr("transform", "translate(0," + (-25) + ")")
-
-var handle = slider.insert("circle", ".track-overlay")
-    .attr("class", "handle")
-    .attr("r", 9);
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
 
-function drop(h) {
-  console.log(_backdate(h));
-  handle.attr("cx", x(h));
-  label
-    .attr("x", x(h))
-    .text(formatDate(h));
-  svg.style("background-color", d3.hsl(h/1000000000, 0.8, 0.8));
-  $("#parker").attr("src","img/SOPSP/f"+String(_backdate(h))+".png");
-}
-</script>
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for this template -->
+  <script src="js/resume.min.js"></script>
 
-    <!-- Custom scripts for this template -->
-    <script src="js/resume.min.js"></script>
 
-  </body>
+  <script>
+    var dt_from = "2018/10/20";
+    var dt_to = "2027/10/20";
 
-  </html>
+    $('.slider-time').html(dt_from);
+    $('.slider-time2').html(dt_to);
+    var min_val = Date.parse(dt_from)/10000;
+    var max_val = Date.parse(dt_to)/10000;
+    function zeroPad(num, places) {
+      var zero = places - num.toString().length + 1;
+      return Array(+(zero > 0 && zero)).join("0") + num;
+    }
+    function formatDT(__dt,_yr) {
+      var year = _yr;
+      var month = zeroPad(__dt.getMonth()+1, 2);
+      var date = zeroPad(__dt.getDate(), 2);
+      var hours = zeroPad(__dt.getHours(), 2);
+      var minutes = zeroPad(__dt.getMinutes(), 2);
+      var seconds = zeroPad(__dt.getSeconds(), 2);
+      return year + '-' + month + '-' + date;
+    };
+
+
+    $("#slider-range").slider({
+      range: true,
+      min: min_val,
+      max: max_val,
+      step: 10,
+      values: [min_val, max_val],
+      slide: function (e, ui) {
+        var dt_cur_from = new Date(ui.values[0]*1000); //.format("yyyy-mm-dd hh:ii:ss");
+        $('.slider-time').html(formatDT(dt_cur_from, $('.year-form1').val()));
+
+        var dt_cur_to = new Date(ui.values[1]*1000); //.format("yyyy-mm-dd hh:ii:ss");                
+        $('.slider-time2').html(formatDT(dt_cur_to, $('.year-form2').val()));
+      }
+    });
+
+    $(".play").click(function(){
+
+      var _images = new Array ();
+      var _diff = (Date.parse($(".slider-time2").text()) - Date.parse($(".slider-time").text()));
+
+      for (var d = new Date($(".slider-time").text()); d <= new Date($(".slider-time2").text()); d.setDate(d.getDate() + 1)) {
+        _images.push(String("img/SOPSP/f" + d.getFullYear()+("0" + (d.getMonth() + 1)).slice(-2) +("0" + d.getDate()).slice(-2) + ".png"));
+      }
+      
+      var timerid = setInterval(changeImage, 250);
+      var __img = _images;
+      var x=0;
+      function changeImage()
+      {
+        _source = __img[x];
+        $('#parker_img').attr('src', _source);
+        x++;
+
+        
+      }
+
+
+    });
+
+  </script>
+
+
+</body>
+
+</html>
