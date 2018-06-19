@@ -16,7 +16,7 @@ r(function(){
     var x =  d3.scale.linear().range([-1, width]);
     var y = d3.scale.linear().range([height, 0]);
 
-    var fileNames = {earth : '/dat/Earth_2018_Oct_NONinert.txt', sol : '/dat/SolO_2018_Oct_NONinert.txt', spp : '/dat/SPP_2018_Oct_NONinert.txt'}
+    var fileNames = {earth : 'dat/Earth_2018_Oct_NONinert.txt', sol : 'dat/SolO_2018_Oct_NONinert.txt', spp : 'dat/SPP_2018_Oct_NONinert.txt'}
     var fileData = {earth : {color:"#68E30A",
     r:.35}, 
     				sol : {color:"#BED4E7", //1264A8
