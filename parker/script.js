@@ -64,6 +64,8 @@ r(function(){
 			//posData['earth'].push(d);
 		});
     				});
+
+
     				d3.csv(fileNames['sol'], function(data) {
     					data.forEach(function(d) {
     						ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
@@ -77,6 +79,9 @@ r(function(){
 			.attr("cx", x(d.x))
 			.attr("cy", y(d.y))
 			.attr("fill", fileData['sol']['color']);
+
+
+
 
 			pushData(d['time'], "sol", d['x'], d['y'], d['z']);
 		});
@@ -141,11 +146,12 @@ r(function(){
 
 
     svg.append("circle") //SUN
-			.attr("r", 5)
+			.attr("r", 15)
 			.attr("cx", x(0))
 			.attr("cy", y(0))
 			.attr("fill", "yellow");
 
+	var graph_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.8)).attr('text-anchor', 'middle').style('fill', '#FF540B').text('');
 
 
     document.getElementById("toggle").addEventListener("click", function(){
@@ -248,18 +254,20 @@ r(function(){
     var current_date = new Date(0);
     var earth = svg.append("circle")
 			.attr("r", 0)
-			.attr("cx", x(0))
-			.attr("cy", y(0))
+			.attr("x", x(0))
+			.attr("y", y(0))
 			.attr("fill", fileData['earth']['color']);
-    var sol= svg.append("circle")
-			.attr("r", 0)
-			.attr("cx", x(0))
-			.attr("cy", y(0))
+    var sol= svg.append("rect")
+			.attr("width", 0)
+			.attr("height", 0)
+			.attr("x", x(0))
+			.attr("y", y(0))
 			.attr("fill", fileData['sol']['color']);
-    var spp= svg.append("circle")
-			.attr("r", 0)
-			.attr("cx", x(0))
-			.attr("cy", y(0))
+    var spp= svg.append("rect")
+			.attr("width", 0)
+			.attr("height", 0)
+			.attr("x", x(0))
+			.attr("y", y(0))
 			.attr("fill", fileData['spp']['color']);
 
     function animate(time) {
@@ -270,20 +278,23 @@ r(function(){
     	current_date = new Date(start.getTime() + (progressPercent * (end.getTime() - start.getTime())));
   //text.text(new Date(progressPercent / 100) * (end.getTime() - start.getTime()));
   text.text(slice(current_date));
+  graph_text.text(slice(current_date));
 
   for(i in posData[slice(current_date)]){
   	if(posData[slice(current_date)][i]['type'] == "earth"){
-  		earth.attr("r", 7.5)
+  		earth.attr("r", 6)
   				.attr("cx", x(posData[slice(current_date)][i]["x"]))
-  				.attr("cy", y(posData[slice(current_date)][i]["y"]))
+  				.attr("cy", y(posData[slice(current_date)][i]["y"]));
   	}else if(posData[slice(current_date)][i]['type'] == "sol"){
-  		sol.attr("r", 7.5)
-  				.attr("cx", x(posData[slice(current_date)][i]["x"]))
-  				.attr("cy", y(posData[slice(current_date)][i]["y"]))
+  		sol.attr("height", 16)
+  				.attr("width", 16)
+  				.attr("x", x(posData[slice(current_date)][i]["x"])-8)
+  				.attr("y", y(posData[slice(current_date)][i]["y"])-8);
   	}else if(posData[slice(current_date)][i]['type'] == "spp"){
-  		spp.attr("r", 7.5)
-  				.attr("cx", x(posData[slice(current_date)][i]["x"]))
-  				.attr("cy", y(posData[slice(current_date)][i]["y"]))
+  		spp.attr("height", 16)
+  				.attr("width", 16)
+  				.attr("x", x(posData[slice(current_date)][i]["x"])-8)
+  				.attr("y", y(posData[slice(current_date)][i]["y"])-8);
   	}
   }
 
@@ -296,7 +307,7 @@ r(function(){
 requestAnimationFrame(animate);
 
 function animateScrollTo(scrollTo) {
-	var twe = new TWEEN.Tween({ y: scrollY }).to({ y: scrollTo }, 300).onUpdate(function update() {
+	var twe = new TWEEN.Tween({ y: scrollY }).to({ y: scrollTo }, 900).onUpdate(function update() {
 		setScrollTop(this.y);
 	}).start();
 }
