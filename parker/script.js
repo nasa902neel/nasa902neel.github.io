@@ -10,8 +10,6 @@ r(function(){
 	width = 700 - margin.left - margin.right,
 	height = 700 - margin.top - margin.bottom;
 
-
-	var _toggle = false;
     // Set the ranges
     var x =  d3.scale.linear().range([-1, width]);
     var y = d3.scale.linear().range([height, 0]);
@@ -21,37 +19,37 @@ r(function(){
     r:.35}, 
     				sol : {color:"#BED4E7", //1264A8
     				r:.45}, 
-    				spp : {color:"#FFD0BC", //FF540B
+    				spp : {color:"#fc7237", //FF540B
     				r:.45}};
     				var posData = {};
-    
-    function slice(date){
-    	return String(new Date(date)).slice(4,16);
-    }
-    function pushData(date, type, x, y, z){
-    	date = new Date(date);
+
+                    function slice(date){
+                       return String(new Date(date)).slice(4,16);
+                   }
+                   function pushData(date, type, x, y, z){
+                       date = new Date(date);
     	//console.log(String(date).slice(4,15));
     	if(posData[slice(date)] == undefined){
     		posData[slice(date)] = [];
     	}
     	posData[slice(date)].push({
-				type : type,
-				time : date,
-				x    : x,
-				y    : y,
-				z	 : z
-			});
+            type : type,
+            time : date,
+            x    : x,
+            y    : y,
+            z	 : z
+        });
     }
 
 
 
 
-    				d3.csv(fileNames['earth'], function(data) {
-    					data.forEach(function(d) {
-    						ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-    						d['x'] = ret[0];
-    						d['y'] = ret[1];
-    						d['z'] = ret[2];
+    d3.csv(fileNames['earth'], function(data) {
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['earth']['r'])
@@ -63,16 +61,16 @@ r(function(){
 			pushData(d['time'], "earth", d['x'], d['y'], d['z']);
 			//posData['earth'].push(d);
 		});
-    				});
+   });
 
 
-    				d3.csv(fileNames['sol'], function(data) {
-    					data.forEach(function(d) {
-    						ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-    						d['time'] = new Date(d['time']);
-    						d['x'] = ret[0];
-    						d['y'] = ret[1];
-    						d['z'] = ret[2];
+    d3.csv(fileNames['sol'], function(data) {
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['time'] = new Date(d['time']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['sol']['r'])
@@ -85,14 +83,14 @@ r(function(){
 
 			pushData(d['time'], "sol", d['x'], d['y'], d['z']);
 		});
-    				});
-    				d3.csv(fileNames['spp'], function(data) {
-    					data.forEach(function(d) {
-    						ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-    						d['time'] = new Date(d['time']);
-    						d['x'] = ret[0];
-    						d['y'] = ret[1];
-    						d['z'] = ret[2];
+   });
+    d3.csv(fileNames['spp'], function(data) {
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['time'] = new Date(d['time']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['spp']['r'])
@@ -103,7 +101,7 @@ r(function(){
 			//posData['spp'].push(d);.
 			pushData(d['time'], "spp", d['x'], d['y'], d['z']);
 		});
-    				});
+   });
 
 
 
@@ -146,27 +144,14 @@ r(function(){
 
 
     svg.append("circle") //SUN
-			.attr("r", 15)
-			.attr("cx", x(0))
-			.attr("cy", y(0))
-			.attr("fill", "yellow");
+    .attr("r", 15)
+    .attr("cx", x(0))
+    .attr("cy", y(0))
+    .attr("fill", "yellow");
 
-	var graph_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.8)).attr('text-anchor', 'middle').style('fill', '#FF540B').text('');
-
-
-    document.getElementById("toggle").addEventListener("click", function(){
-    	console.log("###");
-    	if(_toggle == false){
-    		_toggle = true;
-    		setInterval(function(){
-
-    		}, 1000);
-    	}
-    	else
-    	{
-    		_toggle = false;
-    	}
-    });
+    var graph_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.75)).attr('text-anchor', 'middle').style('fill', '#FFF').text('');
+    var parker_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.825)).attr('text-anchor', 'middle').attr("font-size", "20px").style('fill', fileData['spp']['color']).text('Parker Solar Probe');
+    var solar_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.9)).attr('text-anchor', 'middle').attr("font-size", "20px").style('fill', fileData['sol']['color']).text('Solar Orbiter');
 
     
 
@@ -238,37 +223,36 @@ r(function(){
     });
 
 
-
-
     svg_scrolly.on('click', function () {
     	var t = getTheta(center, d3.mouse(this));
     	strokeValue = circleLength - circleLength * (t / 360);
     	var percent = 100 - strokeValue / circleLength * 100;
-    	animateScrollTo((scrollableElementHeight - windowHeight) / 100 * percent);
-    });
+        document.getElementById("toggletext").innerText = "PAUSE";
+        animateScrollTo(scrollY, (scrollableElementHeight - windowHeight) / 100 * percent, 0, 3000);
 
+    });
 
 
 
     var lastScrollY = 0;
     var current_date = new Date(0);
     var earth = svg.append("circle")
-			.attr("r", 0)
-			.attr("x", x(0))
-			.attr("y", y(0))
-			.attr("fill", fileData['earth']['color']);
+    .attr("r", 0)
+    .attr("x", x(0))
+    .attr("y", y(0))
+    .attr("fill", fileData['earth']['color']);
     var sol= svg.append("rect")
-			.attr("width", 0)
-			.attr("height", 0)
-			.attr("x", x(0))
-			.attr("y", y(0))
-			.attr("fill", fileData['sol']['color']);
+    .attr("width", 0)
+    .attr("height", 0)
+    .attr("x", x(0))
+    .attr("y", y(0))
+    .attr("fill", fileData['sol']['color']);
     var spp= svg.append("rect")
-			.attr("width", 0)
-			.attr("height", 0)
-			.attr("x", x(0))
-			.attr("y", y(0))
-			.attr("fill", fileData['spp']['color']);
+    .attr("width", 0)
+    .attr("height", 0)
+    .attr("x", x(0))
+    .attr("y", y(0))
+    .attr("fill", fileData['spp']['color']);
 
     function animate(time) {
     	requestAnimationFrame(animate);
@@ -283,33 +267,70 @@ r(function(){
   for(i in posData[slice(current_date)]){
   	if(posData[slice(current_date)][i]['type'] == "earth"){
   		earth.attr("r", 6)
-  				.attr("cx", x(posData[slice(current_date)][i]["x"]))
-  				.attr("cy", y(posData[slice(current_date)][i]["y"]));
-  	}else if(posData[slice(current_date)][i]['type'] == "sol"){
-  		sol.attr("height", 16)
-  				.attr("width", 16)
-  				.attr("x", x(posData[slice(current_date)][i]["x"])-8)
-  				.attr("y", y(posData[slice(current_date)][i]["y"])-8);
-  	}else if(posData[slice(current_date)][i]['type'] == "spp"){
-  		spp.attr("height", 16)
-  				.attr("width", 16)
-  				.attr("x", x(posData[slice(current_date)][i]["x"])-8)
-  				.attr("y", y(posData[slice(current_date)][i]["y"])-8);
-  	}
-  }
+          .attr("cx", x(posData[slice(current_date)][i]["x"]))
+          .attr("cy", y(posData[slice(current_date)][i]["y"]));
+      }else if(posData[slice(current_date)][i]['type'] == "sol"){
+        sol.attr("height", 16)
+        .attr("width", 16)
+        .attr("x", x(posData[slice(current_date)][i]["x"])-8)
+        .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+    }else if(posData[slice(current_date)][i]['type'] == "spp"){
+        spp.attr("height", 16)
+        .attr("width", 16)
+        .attr("x", x(posData[slice(current_date)][i]["x"])-8)
+        .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+    }
+}
 
-  strokeValue = circleLength - circleLength * progressPercent;
-  circle.attr('stroke-dashoffset', strokeValue);
-  updateOverlay();
+strokeValue = circleLength - circleLength * progressPercent;
+circle.attr('stroke-dashoffset', strokeValue);
+updateOverlay();
 
 }
 
 requestAnimationFrame(animate);
+_stop = false;
 
-function animateScrollTo(scrollTo) {
-	var twe = new TWEEN.Tween({ y: scrollY }).to({ y: scrollTo }, 900).onUpdate(function update() {
-		setScrollTop(this.y);
-	}).start();
+
+var twe = new TWEEN.Tween();
+var pause = false;
+var running = false;
+document.getElementById("toggle").addEventListener("click", function( event ) {
+    if(document.getElementById("toggletext").innerText == "PLAY"){
+        document.getElementById("toggletext").innerText = "PAUSE";
+        if(running){
+            twe.stop();
+        }else{
+            if(scrollY >= 19000){
+                animateScrollTo(0, 20000, 0, 5000);
+            }else{
+                animateScrollTo(scrollY, 20000, 0, 5000);
+            }
+
+        }
+    }
+    else{
+        document.getElementById("toggletext").innerText = "PLAY";
+        twe.stop();
+    }
+}, false);
+function animateScrollTo(scrollFrom, scrollTo, cont, time) {
+    twe.stop();
+    twe = new TWEEN.Tween({ y: scrollFrom }).to({ y: scrollTo }, time).onStart(function start(){
+        document.getElementById("toggletext").innerText = "PAUSE";
+        running = true;
+    }).onUpdate(function update() {
+      setScrollTop(this.y);
+      running = true;
+  })
+    .onStop(function stop(){
+        document.getElementById("toggletext").innerText = "PLAY";
+        running = false;
+    })
+    .onComplete(function done(){
+        document.getElementById("toggletext").innerText = "PLAY";
+        running = false;
+    }).repeat(cont).start();
 }
 
 function setScrollTop(value) {
@@ -319,5 +340,16 @@ function setScrollTop(value) {
 		document.body.scrollTop = value;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}

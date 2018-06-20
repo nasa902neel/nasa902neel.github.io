@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="victor.min.js"></script>
     <script src="Tween.min.js"></script>
+    
 
 </head>
 <body>
@@ -19,15 +20,16 @@
             This visualization displays the orbital locations of the Parker Solar Probe, the Solar Orbiter and the Earth through 2027. Still in Development
         </p>
         <div class="svg">
-            <a class="button" id="toggle" href="#">
+            <a class="button" id="toggle">
                 <svg>
                     <rect height="40" width="130" fill="transparent" />
                 </svg>
-                <span>PLAY</span>
+                <span id="toggletext">PLAY</span>
             </a>
-
         </div>
     </div>
+    <canvas id="canvas" width="800" height="400"></canvas>
+<div id="png-container"></div>
     <div class="svg_scrolly"></div>
     <div class="scroll"></div>
     <!-- load the d3.js library -->    

@@ -6,7 +6,9 @@ body{
   float: left;
   fill: #FF540B;
 }
-
+a:hover {
+ cursor:pointer;
+}
 
 h1{
 	color: #fff;
