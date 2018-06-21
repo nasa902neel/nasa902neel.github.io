@@ -24,10 +24,10 @@ r(function(){
     				var posData = {};
 
                     function slice(date){
-                       return String(new Date(date)).slice(4,16);
-                   }
-                   function pushData(date, type, x, y, z){
-                       date = new Date(date);
+                     return String(new Date(date)).slice(4,16);
+                 }
+                 function pushData(date, type, x, y, z){
+                     date = new Date(date);
     	//console.log(String(date).slice(4,15));
     	if(posData[slice(date)] == undefined){
     		posData[slice(date)] = [];
@@ -45,11 +45,11 @@ r(function(){
 
 
     d3.csv(fileNames['earth'], function(data) {
-       data.forEach(function(d) {
-          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-          d['x'] = ret[0];
-          d['y'] = ret[1];
-          d['z'] = ret[2];
+     data.forEach(function(d) {
+      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+      d['x'] = ret[0];
+      d['y'] = ret[1];
+      d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['earth']['r'])
@@ -61,16 +61,16 @@ r(function(){
 			pushData(d['time'], "earth", d['x'], d['y'], d['z']);
 			//posData['earth'].push(d);
 		});
-   });
+ });
 
 
     d3.csv(fileNames['sol'], function(data) {
-       data.forEach(function(d) {
-          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-          d['time'] = new Date(d['time']);
-          d['x'] = ret[0];
-          d['y'] = ret[1];
-          d['z'] = ret[2];
+     data.forEach(function(d) {
+      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+      d['time'] = new Date(d['time']);
+      d['x'] = ret[0];
+      d['y'] = ret[1];
+      d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['sol']['r'])
@@ -83,14 +83,14 @@ r(function(){
 
 			pushData(d['time'], "sol", d['x'], d['y'], d['z']);
 		});
-   });
+ });
     d3.csv(fileNames['spp'], function(data) {
-       data.forEach(function(d) {
-          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-          d['time'] = new Date(d['time']);
-          d['x'] = ret[0];
-          d['y'] = ret[1];
-          d['z'] = ret[2];
+     data.forEach(function(d) {
+      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+      d['time'] = new Date(d['time']);
+      d['x'] = ret[0];
+      d['y'] = ret[1];
+      d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['spp']['r'])
@@ -101,7 +101,7 @@ r(function(){
 			//posData['spp'].push(d);.
 			pushData(d['time'], "spp", d['x'], d['y'], d['z']);
 		});
-   });
+ });
 
 
 
@@ -247,12 +247,52 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['sol']['color']);
+    var sol_left= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
+    var sol_mid= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
+    var sol_right= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
+
+
+
+
     var spp= svg.append("rect")
     .attr("width", 0)
     .attr("height", 0)
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['spp']['color']);
+    var spp_left= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
+    var spp_mid= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
+    var spp_right= svg.append("line")
+    .attr("x1", x(0))
+    .attr("y1", y(0))
+    .attr("x2", x(0))
+    .attr("y2", y(0))
+    .attr("stroke", "white");
 
     function animate(time) {
     	requestAnimationFrame(animate);
@@ -274,11 +314,58 @@ r(function(){
         .attr("width", 16)
         .attr("x", x(posData[slice(current_date)][i]["x"])-8)
         .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+
+        _x = x(posData[slice(current_date)][i]["x"])-8;
+        _y = y(posData[slice(current_date)][i]["y"])-8;
+
+        sol_left.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x )
+        .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(5.5," + _x + 8 + "," + _y + 8 +")");
+        sol_mid.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x )
+        .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(39," + _x + 8 + "," + _y + 8 +")");
+        sol_right.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x )
+        .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");
     }else if(posData[slice(current_date)][i]['type'] == "spp"){
         spp.attr("height", 16)
         .attr("width", 16)
         .attr("x", x(posData[slice(current_date)][i]["x"])-8)
         .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+
+        _x = x(posData[slice(current_date)][i]["x"])-8;
+        _y = y(posData[slice(current_date)][i]["y"])-8;
+
+
+        var cx = _x;
+        var xy = _y;
+        var sx = 2;
+        var sy = 2;
+        spp_left.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x)
+        .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(13," + _x + 8 + "," + _y + 8 +")");
+        spp_mid.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x )
+        .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(53," + _x + 8 + "," + _y + 8 +")");
+        spp_right.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", _x)
+        .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");
+        var _dist = Math.sqrt((x(posData[slice(current_date)][i]["x"]))^2 + (y(posData[slice(current_date)][i]["y"]))^2);
+
+
+
     }
 }
 
