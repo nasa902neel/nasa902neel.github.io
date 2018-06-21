@@ -17,7 +17,7 @@ r(function(){
     var fileNames = {earth : 'dat/Earth_2018_Oct_NONinert.txt', sol : 'dat/SolO_2018_Oct_NONinert.txt', spp : 'dat/SPP_2018_Oct_NONinert.txt'}
     var fileData = {earth : {color:"#68E30A",
     r:.35}, 
-    				sol : {color:"#BED4E7", //1264A8
+    				sol : {color:"#74b5ed", //1264A8
     				r:.45}, 
     				spp : {color:"#fc7237", //FF540B
     				r:.45}};
@@ -228,7 +228,7 @@ r(function(){
     	strokeValue = circleLength - circleLength * (t / 360);
     	var percent = 100 - strokeValue / circleLength * 100;
         document.getElementById("toggletext").innerText = "PAUSE";
-        animateScrollTo(scrollY, (scrollableElementHeight - windowHeight) / 100 * percent, 0, 3000);
+        animateScrollTo(scrollY, (scrollableElementHeight - windowHeight) / 100 * percent, 0, 8000);
 
     });
 
@@ -247,7 +247,7 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['sol']['color']);
-    var sol_left= svg.append("line")
+    /*var sol_left= svg.append("line")
     .attr("x1", x(0))
     .attr("y1", y(0))
     .attr("x2", x(0))
@@ -264,7 +264,7 @@ r(function(){
     .attr("y1", y(0))
     .attr("x2", x(0))
     .attr("y2", y(0))
-    .attr("stroke", "white");
+    .attr("stroke", "white");*/
 
 
 
@@ -275,7 +275,7 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['spp']['color']);
-    var spp_left= svg.append("line")
+    /*var spp_left= svg.append("line")
     .attr("x1", x(0))
     .attr("y1", y(0))
     .attr("x2", x(0))
@@ -292,7 +292,7 @@ r(function(){
     .attr("y1", y(0))
     .attr("x2", x(0))
     .attr("y2", y(0))
-    .attr("stroke", "white");
+    .attr("stroke", "white");*/
 
     function animate(time) {
     	requestAnimationFrame(animate);
@@ -318,7 +318,7 @@ r(function(){
         _x = x(posData[slice(current_date)][i]["x"])-8;
         _y = y(posData[slice(current_date)][i]["y"])-8;
 
-        sol_left.attr("x1", x(0))
+        /*sol_left.attr("x1", x(0))
         .attr("y1", y(0))
         .attr("x2", _x )
         .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
@@ -332,7 +332,7 @@ r(function(){
         .attr("y1", y(0))
         .attr("x2", _x )
         .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
-        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");
+        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");*/
     }else if(posData[slice(current_date)][i]['type'] == "spp"){
         spp.attr("height", 16)
         .attr("width", 16)
@@ -347,7 +347,7 @@ r(function(){
         var xy = _y;
         var sx = 2;
         var sy = 2;
-        spp_left.attr("x1", x(0))
+        /*spp_left.attr("x1", x(0))
         .attr("y1", y(0))
         .attr("x2", _x)
         .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
@@ -361,7 +361,7 @@ r(function(){
         .attr("y1", y(0))
         .attr("x2", _x)
         .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
-        .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");
+        .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");*/
         var _dist = Math.sqrt((x(posData[slice(current_date)][i]["x"]))^2 + (y(posData[slice(current_date)][i]["y"]))^2);
 
 
@@ -389,9 +389,9 @@ document.getElementById("toggle").addEventListener("click", function( event ) {
             twe.stop();
         }else{
             if(scrollY >= 19000){
-                animateScrollTo(0, 20000, 0, 5000);
+                animateScrollTo(0, 20000, 0, 8000);
             }else{
-                animateScrollTo(scrollY, 20000, 0, 5000);
+                animateScrollTo(scrollY, 20000, 0, 8000);
             }
 
         }
