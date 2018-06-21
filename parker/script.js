@@ -1,4 +1,6 @@
-
+/*Created by MIDN 3/C Abhishek Gorti, United States Naval Academy, USN, Intern at NASA GSFC Summer 2018 
+        abhishek.gorti@gmail.com
+*/
 r(function(){
 	function sph2cart(azimuth, elevation, r) {
 		r *= ((1/696000) * (6.955e5/149598000)); // Convert from km to AU
@@ -14,9 +16,11 @@ r(function(){
     var x =  d3.scale.linear().range([-1, width]);
     var y = d3.scale.linear().range([height, 0]);
 
-    var fileNames = {earth : 'dat/Earth_2018_Oct_NONinert.txt', sol : 'dat/SolO_2018_Oct_NONinert.txt', spp : 'dat/SPP_2018_Oct_NONinert.txt'}
+    var fileNames = {venus: 'dat/Venus_2018_Oct_NONinert.txt',earth : 'dat/Earth_2018_Oct_NONinert.txt', sol : 'dat/SolO_2018_Oct_NONinert.txt', spp : 'dat/SPP_2018_Oct_NONinert.txt'}
     var fileData = {earth : {color:"#68E30A",
-    r:.35}, 
+                    r:.35},
+                    venus : {color: "#FF0000",
+                    r:.15},
     				sol : {color:"#74b5ed", //1264A8
     				r:.45}, 
     				spp : {color:"#fc7237", //FF540B
@@ -51,18 +55,27 @@ r(function(){
           d['y'] = ret[1];
           d['z'] = ret[2];
 			// Add the scatterplot
-			svg.append("circle")
-			.attr("r", fileData['earth']['r'])
-			.attr("cx", x(d.x))
-			.attr("cy", y(d.y))
-			.attr("fill", fileData['earth']['color']);
+			draw_plot(d, "earth");
 
 
 			pushData(d['time'], "earth", d['x'], d['y'], d['z']);
 			//posData['earth'].push(d);
 		});
    });
+d3.csv(fileNames['venus'], function(data) {
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
+            // Add the scatterplot
+            draw_plot(d, "venus");
 
+
+            pushData(d['time'], "venus", d['x'], d['y'], d['z']);
+            //posData['earth'].push(d);
+        });
+   });
 
     d3.csv(fileNames['sol'], function(data) {
        data.forEach(function(d) {
@@ -72,11 +85,7 @@ r(function(){
           d['y'] = ret[1];
           d['z'] = ret[2];
 			// Add the scatterplot
-			svg.append("circle")
-			.attr("r", fileData['sol']['r'])
-			.attr("cx", x(d.x))
-			.attr("cy", y(d.y))
-			.attr("fill", fileData['sol']['color']);
+			draw_plot(d, "sol");
 
 
 
@@ -92,17 +101,28 @@ r(function(){
           d['y'] = ret[1];
           d['z'] = ret[2];
 			// Add the scatterplot
-			svg.append("circle")
-			.attr("r", fileData['spp']['r'])
-			.attr("cx", x(d.x))
-			.attr("cy", y(d.y))
-			.attr("fill", fileData['spp']['color']);
+			draw_plot(d, "spp");
 
 			//posData['spp'].push(d);.
 			pushData(d['time'], "spp", d['x'], d['y'], d['z']);
 		});
    });
+    var xy_data = [];
+    var zx_data = [];
+ function draw_plot(d, name){
+        xy_data.push(svg.append("circle")
+            .attr("r", fileData[name]['r'])
+            .attr("cx", x(d.x))
+            .attr("cy", y(d["y"]))
+            .attr("fill", fileData[name]['color']));
 
+        zx_data.push(svg.append("circle")
+            .attr("r", fileData[name]['r'])
+            .attr("cx", x(d.x))
+            .attr("cy", y(d["z"]))
+            .attr("fill", fileData[name]['color'])
+            .attr("visibility", "hidden"));
+ }
 
 
     // Define the axes
@@ -252,6 +272,11 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['earth']['color']);
+    var venus = svg.append("circle")
+    .attr("r", 0)
+    .attr("x", x(0))
+    .attr("y", y(0))
+    .attr("fill", fileData['venus']['color']);
     var sol= svg.append("rect")
     .attr("width", 0)
     .attr("height", 0)
@@ -305,7 +330,7 @@ r(function(){
     .attr("x2", x(0))
     .attr("y2", y(0))
     .attr("stroke", "white");
-
+    var _current_axis_value = "y";
     function animate(time) {
     	requestAnimationFrame(animate);
     	TWEEN.update(time);
@@ -320,15 +345,19 @@ r(function(){
   	if(posData[slice(current_date)][i]['type'] == "earth"){
   		earth.attr("r", 6)
           .attr("cx", x(posData[slice(current_date)][i]["x"]))
-          .attr("cy", y(posData[slice(current_date)][i]["y"]));
+          .attr("cy", y(posData[slice(current_date)][i][_current_axis_value]));
+      }else if(posData[slice(current_date)][i]['type'] == "venus"){
+        venus.attr("r", 6)
+          .attr("cx", x(-2 * posData[slice(current_date)][i]["x"]))
+          .attr("cy", y(posData[slice(current_date)][i][_current_axis_value]));
       }else if(posData[slice(current_date)][i]['type'] == "sol"){
         sol.attr("height", 16)
         .attr("width", 16)
         .attr("x", x(posData[slice(current_date)][i]["x"])-8)
-        .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+        .attr("y", y(posData[slice(current_date)][i][_current_axis_value])-8);
 
         _x = x(posData[slice(current_date)][i]["x"])-8;
-        _y = y(posData[slice(current_date)][i]["y"])-8;
+        _y = y(posData[slice(current_date)][i][_current_axis_value])-8;
         if((_showcam == true)){
 
         sol_left.attr("x1", x(0))
@@ -368,10 +397,10 @@ r(function(){
         spp.attr("height", 16)
         .attr("width", 16)
         .attr("x", x(posData[slice(current_date)][i]["x"])-8)
-        .attr("y", y(posData[slice(current_date)][i]["y"])-8);
+        .attr("y", y(posData[slice(current_date)][i][_current_axis_value])-8);
 
         _x = x(posData[slice(current_date)][i]["x"])-8;
-        _y = y(posData[slice(current_date)][i]["y"])-8;
+        _y = y(posData[slice(current_date)][i][_current_axis_value])-8;
 
 
         var cx = _x;
@@ -394,7 +423,7 @@ r(function(){
         .attr("x2", _x)
         .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
         .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");
-        var _dist = Math.sqrt((x(posData[slice(current_date)][i]["x"]))^2 + (y(posData[slice(current_date)][i]["y"]))^2);
+        var _dist = Math.sqrt((x(posData[slice(current_date)][i]["x"]))^2 + (y(posData[slice(current_date)][i][_current_axis_value]))^2);
     }
     else{
         spp_left.attr("x1", x(0))
@@ -461,6 +490,24 @@ document.getElementById("camtoggle").addEventListener("click", function( event )
         _showcam = true;
     }
 }, false);
+document.getElementById("xytoggle").addEventListener("click", function( event ) {
+_current_axis_value = "y";
+for(i in zx_data){
+    zx_data[i].attr("visibility", "hidden");
+    xy_data[i].attr("visibility", "visible");
+}
+requestAnimationFrame(animate);
+
+}, false);
+document.getElementById("zxtoggle").addEventListener("click", function( event ) {
+_current_axis_value = "z";
+for(i in zx_data){
+    xy_data[i].attr("visibility", "hidden");
+    zx_data[i].attr("visibility", "visible");
+}
+requestAnimationFrame(animate);
+
+}, false);
 function animateScrollTo(scrollFrom, scrollTo, cont, time) {
     twe.stop();
     twe = new TWEEN.Tween({ y: scrollFrom }).to({ y: scrollTo }, time).onStart(function start(){
@@ -487,16 +534,6 @@ function setScrollTop(value) {
 		document.body.scrollTop = value;
 	}
 }
-
-
-
-
-
-
-
-
-
-
 
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}

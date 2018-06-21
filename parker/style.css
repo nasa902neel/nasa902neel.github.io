@@ -69,25 +69,13 @@ p{
 		transition-delay: .5s;
 }
 
-.svg .button:nth-child(1):hover rect {
+.svg .button:hover rect {
 		animation: draw1 .75s linear forwards;
 }
 
-.svg .button:nth-child(2):hover rect {
-		animation: draw2 .75s linear forwards;
-}
 
-.svg .button:nth-child(3) span {
-		border: 3px solid red;
-		transform: scale(1);
-		width: 125px;
-		height: 35px;
-		line-height: 37px;
-}
 
-.svg .button:nth-child(3):hover span {
-		animation: draw3 .75s linear forwards;
-}
+
 
 @keyframes draw1 {
 		0% {
