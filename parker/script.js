@@ -24,10 +24,10 @@ r(function(){
     				var posData = {};
 
                     function slice(date){
-                     return String(new Date(date)).slice(4,16);
-                 }
-                 function pushData(date, type, x, y, z){
-                     date = new Date(date);
+                       return String(new Date(date)).slice(4,16);
+                   }
+                   function pushData(date, type, x, y, z){
+                       date = new Date(date);
     	//console.log(String(date).slice(4,15));
     	if(posData[slice(date)] == undefined){
     		posData[slice(date)] = [];
@@ -45,11 +45,11 @@ r(function(){
 
 
     d3.csv(fileNames['earth'], function(data) {
-     data.forEach(function(d) {
-      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-      d['x'] = ret[0];
-      d['y'] = ret[1];
-      d['z'] = ret[2];
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['earth']['r'])
@@ -61,16 +61,16 @@ r(function(){
 			pushData(d['time'], "earth", d['x'], d['y'], d['z']);
 			//posData['earth'].push(d);
 		});
- });
+   });
 
 
     d3.csv(fileNames['sol'], function(data) {
-     data.forEach(function(d) {
-      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-      d['time'] = new Date(d['time']);
-      d['x'] = ret[0];
-      d['y'] = ret[1];
-      d['z'] = ret[2];
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['time'] = new Date(d['time']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['sol']['r'])
@@ -83,14 +83,14 @@ r(function(){
 
 			pushData(d['time'], "sol", d['x'], d['y'], d['z']);
 		});
- });
+   });
     d3.csv(fileNames['spp'], function(data) {
-     data.forEach(function(d) {
-      ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
-      d['time'] = new Date(d['time']);
-      d['x'] = ret[0];
-      d['y'] = ret[1];
-      d['z'] = ret[2];
+       data.forEach(function(d) {
+          ret = sph2cart(d['lon'],d['lat'],d['rad_dist']);
+          d['time'] = new Date(d['time']);
+          d['x'] = ret[0];
+          d['y'] = ret[1];
+          d['z'] = ret[2];
 			// Add the scatterplot
 			svg.append("circle")
 			.attr("r", fileData['spp']['r'])
@@ -101,7 +101,7 @@ r(function(){
 			//posData['spp'].push(d);.
 			pushData(d['time'], "spp", d['x'], d['y'], d['z']);
 		});
- });
+   });
 
 
 
@@ -152,7 +152,18 @@ r(function(){
     var graph_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.75)).attr('text-anchor', 'middle').style('fill', '#FFF').text('');
     var parker_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.825)).attr('text-anchor', 'middle').attr("font-size", "20px").style('fill', fileData['spp']['color']).text('Parker Solar Probe');
     var solar_text = svg.append('text').attr('x', x(0.75)).attr('y', y(-0.9)).attr('text-anchor', 'middle').attr("font-size", "20px").style('fill', fileData['sol']['color']).text('Solar Orbiter');
-
+    var sol_key= svg.append("rect")
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("x", x(0.425))
+        .attr("y", y(-0.86))
+        .attr("fill", fileData['sol']['color']);
+    var spp= svg.append("rect")
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("x", x(0.425))
+        .attr("y", y(-0.78))
+        .attr("fill", fileData['spp']['color']);
     
 
     var r = 200,
@@ -228,7 +239,7 @@ r(function(){
     	strokeValue = circleLength - circleLength * (t / 360);
     	var percent = 100 - strokeValue / circleLength * 100;
         document.getElementById("toggletext").innerText = "PAUSE";
-        animateScrollTo(scrollY, (scrollableElementHeight - windowHeight) / 100 * percent, 0, 8000);
+        animateScrollTo(scrollY, (scrollableElementHeight - windowHeight) / 100 * percent, 0, 3000);
 
     });
 
@@ -247,7 +258,7 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['sol']['color']);
-    /*var sol_left= svg.append("line")
+    var sol_left= svg.append("line")
     .attr("x1", x(0))
     .attr("y1", y(0))
     .attr("x2", x(0))
@@ -264,7 +275,7 @@ r(function(){
     .attr("y1", y(0))
     .attr("x2", x(0))
     .attr("y2", y(0))
-    .attr("stroke", "white");*/
+    .attr("stroke", "white");
 
 
 
@@ -275,7 +286,8 @@ r(function(){
     .attr("x", x(0))
     .attr("y", y(0))
     .attr("fill", fileData['spp']['color']);
-    /*var spp_left= svg.append("line")
+
+    var spp_left= svg.append("line")
     .attr("x1", x(0))
     .attr("y1", y(0))
     .attr("x2", x(0))
@@ -292,7 +304,7 @@ r(function(){
     .attr("y1", y(0))
     .attr("x2", x(0))
     .attr("y2", y(0))
-    .attr("stroke", "white");*/
+    .attr("stroke", "white");
 
     function animate(time) {
     	requestAnimationFrame(animate);
@@ -317,8 +329,9 @@ r(function(){
 
         _x = x(posData[slice(current_date)][i]["x"])-8;
         _y = y(posData[slice(current_date)][i]["y"])-8;
+        if((_showcam == true)){
 
-        /*sol_left.attr("x1", x(0))
+        sol_left.attr("x1", x(0))
         .attr("y1", y(0))
         .attr("x2", _x )
         .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
@@ -332,7 +345,25 @@ r(function(){
         .attr("y1", y(0))
         .attr("x2", _x )
         .attr("y2", _y ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
-        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");*/
+        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");
+    }
+    else{
+        sol_left.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0))
+        .attr("y2", y(0) ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(5.5," + _x + 8 + "," + _y + 8 +")");
+        sol_mid.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0) )
+        .attr("y2", y(0) ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(39," + _x + 8 + "," + _y + 8 +")");
+        sol_right.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0) )
+        .attr("y2", y(0)) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");
+    }
     }else if(posData[slice(current_date)][i]['type'] == "spp"){
         spp.attr("height", 16)
         .attr("width", 16)
@@ -347,7 +378,8 @@ r(function(){
         var xy = _y;
         var sx = 2;
         var sy = 2;
-        /*spp_left.attr("x1", x(0))
+        if(_showcam == true){
+        spp_left.attr("x1", x(0))
         .attr("y1", y(0))
         .attr("x2", _x)
         .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
@@ -361,9 +393,26 @@ r(function(){
         .attr("y1", y(0))
         .attr("x2", _x)
         .attr("y2", _y) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
-        .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");*/
+        .attr("transform", "rotate(108," + _x + 8 + "," + _y + 8 +")");
         var _dist = Math.sqrt((x(posData[slice(current_date)][i]["x"]))^2 + (y(posData[slice(current_date)][i]["y"]))^2);
-
+    }
+    else{
+        spp_left.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0))
+        .attr("y2", y(0) ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(5.5," + _x + 8 + "," + _y + 8 +")");
+        spp_mid.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0) )
+        .attr("y2", y(0) ) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(39," + _x + 8 + "," + _y + 8 +")");
+        spp_right.attr("x1", x(0))
+        .attr("y1", y(0))
+        .attr("x2", x(0) )
+        .attr("y2", y(0)) //transform="matrix(sx, 0, 0, sy, cx-sx*cx, cy-sy*cy)"
+        .attr("transform", "rotate(88," + _x + 8 + "," + _y + 8 +")");
+    }
 
 
     }
@@ -389,9 +438,9 @@ document.getElementById("toggle").addEventListener("click", function( event ) {
             twe.stop();
         }else{
             if(scrollY >= 19000){
-                animateScrollTo(0, 20000, 0, 8000);
+                animateScrollTo(0, 20000, 0, 5000);
             }else{
-                animateScrollTo(scrollY, 20000, 0, 8000);
+                animateScrollTo(scrollY, 20000, 0, 5000);
             }
 
         }
@@ -399,6 +448,17 @@ document.getElementById("toggle").addEventListener("click", function( event ) {
     else{
         document.getElementById("toggletext").innerText = "PLAY";
         twe.stop();
+    }
+}, false);
+var _showcam = false;
+document.getElementById("camtoggle").addEventListener("click", function( event ) {
+    if(document.getElementById("camtoggletext").innerText == "CAMERA OFF"){
+        document.getElementById("camtoggletext").innerText = "CAMERA ON";
+        _showcam = false;
+    }
+    else{
+        document.getElementById("camtoggletext").innerText = "CAMERA OFF";
+        _showcam = true;
     }
 }, false);
 function animateScrollTo(scrollFrom, scrollTo, cont, time) {

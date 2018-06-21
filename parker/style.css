@@ -221,3 +221,70 @@ svg {
 	right: 0;
 	width: 600px;
 }
+
+
+
+
+
+/* CSS FOR TOGGLE SWITCH 
+
+
+
+*/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 40px;
+}
+.switch input[type="checkbox"] {
+  display: none;
+}
+.switch input:checked + .knob {
+  animation: colorChange 0.1s linear forwards;
+}
+.switch input:checked + .knob:before {
+  animation: turnON 0.1s linear forwards;
+}
+
+@keyframes colorChange {
+  from {
+    background-color: #7c6d66;
+  }
+  50% {
+    background-color: #b26b4c;
+  }
+  to {
+    background-color: #FF540B;
+  }
+}
+@keyframes turnON {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(30.4px);
+    box-shadow: -10px 0px 44px 0px #434343;
+  }
+}
+.knob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 40px;
+}
+
+.knob:before {
+  position: absolute;
+  background-color: white;
+  content: "";
+  left: 4px;
+  top: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}

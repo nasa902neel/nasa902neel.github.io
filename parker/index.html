@@ -4,6 +4,23 @@
     <!--Created by MIDN 3/C Abhishek Gorti, United States Naval Academy, USN, Intern at NASA GSFC Summer 2018 
         abhishek.gorti@gmail.com
     -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-22898311-2"></script>
+
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('js', new Date());
+
+ 
+
+  gtag('config', 'UA-22898311-2');
+
+</script>
     <link href="https://fonts.googleapis.com/css?family=Heebo" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="victor.min.js"></script>
@@ -26,6 +43,14 @@
                 </svg>
                 <span id="toggletext">PLAY</span>
             </a>
+            <a class="button" id="camtoggle">
+                <svg>
+                    <rect height="40" width="130" fill="transparent" />
+                </svg>
+                <span id="camtoggletext">CAMERA ON</span>
+            </a>
+
+
         </div>
     </div>
     <canvas id="canvas" width="800" height="400"></canvas>

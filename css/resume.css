@@ -116,7 +116,7 @@ section.resume-section .resume-item .resume-date {
 
 @media (min-width: 768px) {
   section.resume-section {
-    min-height: 100vh;
+    min-height: 60vh;
   }
   section.resume-section .resume-item .resume-date {
     min-width: 18rem;
@@ -125,8 +125,8 @@ section.resume-section .resume-item .resume-date {
 
 @media (min-width: 992px) {
   section.resume-section {
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
 }
 
@@ -144,4 +144,12 @@ a {
 
 a:hover, a:focus, a:active {
   color: #824027;
+}
+
+#banner {
+  background-image: url('../img/fb_croppededit.png'); 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
